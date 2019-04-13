@@ -1,0 +1,87 @@
+
+buildscript {
+
+	ext {
+		springBootVersion = '1.5.6.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'war'
+
+
+//// analysis stuff
+//apply plugin: 'checkstyle'
+//apply plugin: 'findbugs'
+//
+//checkstyle {
+//    toolVersion = '8.12'
+//}
+//
+//findbugs{
+//    findbugsTest.enabled=false
+//    findbugsTest.enabled=false
+//}
+//
+//tasks.withType(FindBugs) {
+//    reports {
+//        xml.enabled = false
+//        html.enabled = true
+//	}
+//}
+
+bootRepackage {
+    mainClass = 'com.ekiras.Application'
+}
+
+group = 'com.lattice'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+war{
+    baseName = project.name
+    version='1.0.0'
+    manifest {
+        attributes 'Main-Class': 'com.ekiras.Application'
+    }
+
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+}
+
+dependencies {
+
+	compile group: 'org.projectlombok', name: 'lombok', version: '1.18.4'
+	compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.6.1'
+	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.6.1'
+	compile group: 'javax.mail', name: 'mail', version: '1.4'
+	compile group: 'org.springframework', name: 'spring-context-support', version: '3.2.0.RELEASE'
+	compile group: 'org.json', name: 'json', version: '20160810'
+	compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+	compile group: 'com.sendgrid', name: 'sendgrid-java', version: '4.2.1'
+	compile group: 'net.objecthunter', name: 'exp4j', version: '0.4.8'
+	compile group: 'org.modelmapper', name: 'modelmapper', version: '0.7.5'
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+	runtime('org.springframework.boot:spring-boot-devtools')
+	compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.13'
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('org.springframework.security:spring-security-test')
+	compile 'org.springframework.boot:spring-boot-starter-tomcat'
+	compile group: 'com.telesign', name: 'telesign', version: '2.2.3'
+}
